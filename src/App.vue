@@ -62,6 +62,7 @@
               Save
             </button>
           </div>
+
           <div class="relative inline-block flex flex-row justify-between">
             <div class="flex flex-row">
               <button
@@ -198,7 +199,12 @@
             </div>
           </div>
 
-          <div class="text-sm text-center text-slate-500 mt-8">by Oxymnds</div>
+          <div class="text-sm text-center text-slate-500 mt-8">
+            <div class="text-grey-400 text-sm text-center">
+              token usage: {{ tokenUsage }}
+            </div>
+            <div class="mt-2">by Oxymnds</div>
+          </div>
         </div>
       </div>
     </div>
@@ -404,6 +410,8 @@ export default {
         max_tokens: 2500,
         temperature: 0,
       });
+
+      this.tokenUsage = this.tokenUsage + completion.data.usage.total_tokens;
 
       const message =
         "Thought: " +
