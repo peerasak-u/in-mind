@@ -2,12 +2,15 @@
   <div
     class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12 font-robotoMono"
   >
-    <div class="relative py-3 w-3/4 sm:mx-auto">
+    <div class="relative w-full sm:w-3/4 sm:mx-auto">
+      <div class="container mb-8 text-center text-5xl">
+        <h1>in<span class="text-orange-600">Mind</span></h1>
+      </div>
       <div
-        class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10"
+        class="relative px-4 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10"
       >
         <div class="mx-auto w-full space-y-8">
-          <div class="flex space-x-4">
+          <div class="flex py-4 sm:py-0 space-x-4">
             <input
               v-if="apiKey"
               v-model="question"
