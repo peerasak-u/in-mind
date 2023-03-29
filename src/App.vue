@@ -218,7 +218,14 @@ const googleSearch = async (input) => {
 };
 
 const googleToolAction = async (input) => {
-  const results = await googleSearch(input);
+  const pattern = /query\s?=\s?(.+)/;
+  const queryWord = input.match(pattern)[1];
+
+  if (!queryWord) {
+    return "Please provide a query";
+  }
+
+  const results = await googleSearch(queryWord);
 
   const output = results.map((item) => {
     return `- ${item.title}: ${item.description}`;
@@ -228,13 +235,39 @@ const googleToolAction = async (input) => {
 };
 
 const dateCalculatorAction = (input) => {
-  const [from, to, type] = input
-    .split(",")
-    .map((date) => date.replace(/("|')/g, "").trim());
+  const fromDatePattern = /^from\s?=\s?("|')(.+)("|'), to/;
+  const from = input.match(fromDatePattern)[2];
+
+  const toDatePattern = /to\s?=\s?("|')(.+)("|'), type/;
+  const to = input.match(toDatePattern)[2];
+
+  const typePattern = /type\s?=\s?("|')(.+)("|')/;
+  const type = input.match(typePattern)[2];
+
+  if (!from) {
+    return "Please provide a from date";
+  }
+
+  if (!to) {
+    return "Please provide a to date";
+  }
+
+  if (!type) {
+    return "Please provide a type";
+  }
+
+  //   Object { from: '1452-04-15T00:00:00.000Z", to="2023-03-29T15:29:44.760Z", type="year', to: '2023-03-29T15:29:44.760Z", type="year', type: "year" }
+  // from: '1452-04-15T00:00:00.000Z", to="2023-03-29T15:29:44.760Z", type="year'
+  // to: '2023-03-29T15:29:44.760Z", type="year'
+  // type: "year"
+
+  console.log({ from, to, type });
 
   let divider = 1000 * 60 * 60 * 24;
 
-  switch (type) {
+  console.log({ divider });
+
+  switch (type.trim()) {
     case "year":
       divider = 1000 * 60 * 60 * 24 * 365;
       break;
@@ -249,12 +282,20 @@ const dateCalculatorAction = (input) => {
       break;
   }
 
-  const result = Math.floor(new Date(to) - new Date(from)) / divider;
+  const result =
+    Math.floor(new Date(to.trim()) - new Date(from.trim())) / divider;
 
   return `${result}`;
 };
 
-const mathCalculatorAction = (expression) => {
+const mathCalculatorAction = (input) => {
+  const pattern = /expression\s?=\s?("|')(.+)("|')/;
+  const expression = input.match(pattern)[2];
+
+  if (!expression) {
+    return "Please provide a expression";
+  }
+
   const result = eval(expression);
   return `${result}`;
 };
@@ -265,16 +306,20 @@ export default {
       loading: false,
       question: "If Leonado da Vinci were still alive, how old would he be?",
       openAiKey: "",
+      tokenUsage: 0,
       messages: [],
       isDropdownVisible: false,
       model: "gpt-3.5-turbo",
       models: ["gpt-3.5-turbo", "gpt-4"],
       tools: [
         {
-          name: "google_search",
-          emoji: "🔍",
+          name: "browser",
+          emoji: "🌐",
           description:
-            "the best search engine in the world. if you don't know the anwser, google it first, input should be a query keyword",
+            "the best search engine in the world. if you don't know the anwser, browse it first",
+          inputs: {
+            query: "a query keyword",
+          },
           selected: true,
           disabled: false,
           task: googleToolAction,
@@ -282,8 +327,10 @@ export default {
         {
           name: "math_calculator",
           emoji: "🧮",
-          description:
-            "calculator for mathamatic problem by using javascript, input should be a mathamatic problem in javascript expression format",
+          description: "calculator for mathamatic problem by using javascript",
+          inputs: {
+            expression: "a mathamatic problem in javascript expression format",
+          },
           selected: false,
           disabled: false,
           task: mathCalculatorAction,
@@ -291,8 +338,12 @@ export default {
         {
           name: "date_calculator",
           emoji: "📅",
-          description:
-            "calculator day between two dates, input should be 'from' and 'to' dates in format 'YYYY-MM-DDTHH:mm:ss.sssZ' and expected result unit in format select one from ['year', 'month', 'day'] separated by comma respectively and no title",
+          description: "calculator day between two dates",
+          inputs: {
+            from: "the start date in format 'YYYY-MM-DDTHH:mm:ss.sssZ'",
+            to: "the end date in format 'YYYY-MM-DDTHH:mm:ss.sssZ'",
+            type: "a type of answer unit, should be only one from ['year', 'month', 'day']",
+          },
           selected: false,
           disabled: false,
           task: dateCalculatorAction,
@@ -311,8 +362,6 @@ export default {
   methods: {
     saveApiKey() {
       localStorage.setItem("openai_api_key", this.openAiKey);
-      console.log("saved");
-      console.log(this.apiKey);
     },
     toggleDropdown() {
       this.isDropdownVisible = !this.isDropdownVisible;
@@ -324,23 +373,26 @@ export default {
     selectTool(tool) {
       tool.selected = !tool.selected;
     },
-    createPrompt(question, tools) {
-      const prefix_prompt =
-        "Answer the following questions as best you can. If you not sure in answer, you can access to the following tools to finding the answer:";
-      const suffix_template =
-        "Use the following format strictly:\nQuestion: the input question you must answer\nThought: you should always think about what to do step by step or question by question\nAction: the action to take, should be one of [{{tool_names}}]\nAction Input: the input to the action\nObservation: the result of the action\n... (this Thought/Action/Action Input/Observation can repeat N times)\nThought: I now know the final answer\nFinal Answer: the final answer to the original input question\n\n\nBegin!\nCurrent Date: {{current_date}}\nQuestion: {{user_input}}\nThought: ";
-      const suffix_prompt = suffix_template
+    async createPrompt(question, tools) {
+      const templateResponse = await fetch("/prompts/main.prompt");
+      const template = await templateResponse.text();
+
+      const prompt = template
+        .replace(
+          "{{tools}}",
+          JSON.stringify(
+            tools.map((tool) => {
+              return {
+                name: tool.name,
+                description: tool.description,
+                inputs: tool.inputs,
+              };
+            })
+          )
+        )
         .replace("{{tool_names}}", tools.map((tool) => tool.name).join(", "))
         .replace("{{user_input}}", question)
-        .replace("{{current_date}}", new Date().toISOString().split("T")[0]);
-
-      const promptTemplate = `${prefix_prompt}\n\n${tools
-        .map((tool) => `${tool.name}: ${tool.description}`)
-        .join("\n")}\n\n${suffix_prompt}`;
-
-      const prompt = promptTemplate
-        .replace("{input}", question)
-        .replace("{tool_names}", tools.map((tool) => tool.name).join(", "));
+        .replace("{{current_date}}", new Date().toISOString());
 
       return prompt;
     },
@@ -466,7 +518,7 @@ export default {
 
       console.log("Question: " + this.question);
 
-      const prompt = this.createPrompt(this.question, this.selectedTools);
+      const prompt = await this.createPrompt(this.question, this.selectedTools);
 
       this.loading = true;
 
