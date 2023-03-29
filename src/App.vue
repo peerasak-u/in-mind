@@ -256,16 +256,7 @@ const dateCalculatorAction = (input) => {
     return "Please provide a type";
   }
 
-  //   Object { from: '1452-04-15T00:00:00.000Z", to="2023-03-29T15:29:44.760Z", type="year', to: '2023-03-29T15:29:44.760Z", type="year', type: "year" }
-  // from: '1452-04-15T00:00:00.000Z", to="2023-03-29T15:29:44.760Z", type="year'
-  // to: '2023-03-29T15:29:44.760Z", type="year'
-  // type: "year"
-
-  console.log({ from, to, type });
-
   let divider = 1000 * 60 * 60 * 24;
-
-  console.log({ divider });
 
   switch (type.trim()) {
     case "year":
