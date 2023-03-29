@@ -318,7 +318,8 @@ export default {
           description:
             "the best search engine in the world. if you don't know the anwser, browse it first",
           inputs: {
-            query: "a query keyword",
+            query:
+              "a single query keyword from only single sub-question, if you have to search birthdate for multiple peoples you should search one by one e.g. 'Donald Trump birthdate'",
           },
           selected: true,
           disabled: false,
@@ -329,7 +330,8 @@ export default {
           emoji: "🧮",
           description: "calculator for mathamatic problem by using javascript",
           inputs: {
-            expression: "a mathamatic problem in javascript expression format",
+            expression:
+              "a mathamatic problem in javascript expression format e.g. '1 + 1'",
           },
           selected: false,
           disabled: false,

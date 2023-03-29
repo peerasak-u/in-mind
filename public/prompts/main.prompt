@@ -12,7 +12,7 @@ FORMAT =
 Question: the input question you must answer
 Thought: you should always think about what to do step by step or question by question
 Action: the action to take, should be one of [{{tool_names}}]
-Action Input: the input to the action with an input title for ex. input_a = "input content", input_b = "123"
+Action Input: the input to the action with format 'input_name = "input_content"' (e.g. input_a = "input content", input_b = "123")
 Observation: the result of the action
 ... (this Thought/Action/Action Input/Observation can repeat N times)
 Thought: I now know the final answer
