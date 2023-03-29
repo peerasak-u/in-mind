@@ -283,7 +283,6 @@ const cnbcSummarizer = async (chunk, apiKey, model) => {
         temperature: 0.2,
       })
       .then((completion) => {
-        console.log({ sum: completion.data.choices[0].message.content });
         resolve(completion.data.choices[0].message.content);
       })
       .catch((error) => {
