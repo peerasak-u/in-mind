@@ -6,6 +6,8 @@ InMind is a web application designed to show how LLMs like ChatGPT can find answ
 
 ## Project setup
 ```
+npm install -g pnpm@8.0.0
+
 pnpm install
 ```
 
