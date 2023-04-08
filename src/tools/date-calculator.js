@@ -1,12 +1,9 @@
+import utils from './utils'
+
 const dateCalculatorAction = (input) => {
-	const fromDatePattern = /^from\s?=\s?("|')(.+)("|'), to/
-	const from = input.match(fromDatePattern)[2]
-
-	const toDatePattern = /to\s?=\s?("|')(.+)("|'), type/
-	const to = input.match(toDatePattern)[2]
-
-	const typePattern = /type\s?=\s?("|')(.+)("|')/
-	const type = input.match(typePattern)[2]
+	const from = utils.matchPattern(/from\s?=\s?(?:"|')(.+)(?:"|'), to/, input)
+	const to = utils.matchPattern(/to\s?=\s?(?:"|')(.+)(?:"|'), type/, input)
+	const type = utils.matchPattern(/type\s?=\s?(?:"|')(.+)(?:"|')/, input)
 
 	if (!from) {
 		return 'Please provide a from date'

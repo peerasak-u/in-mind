@@ -1,4 +1,5 @@
 import { Configuration, OpenAIApi } from 'openai'
+import utils from './utils'
 
 const cnbcScraper = async (input, apiKey, model) => {
 	const results = await fetch('http://localhost:3000/v1/cnbc', {
@@ -66,8 +67,7 @@ const cnbcSummarizer = async (chunk, apiKey, model) => {
 }
 
 const cnbcToolAction = async (input, apiKey, model) => {
-	const pattern = /url\s?=\s?(.+)/
-	const url = input.match(pattern)[1]
+	const url = utils.matchPattern(/url\s?=\s?(.+)/, input)
 
 	if (!url) {
 		return 'Please provide a valid url'

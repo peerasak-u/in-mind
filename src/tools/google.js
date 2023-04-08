@@ -1,3 +1,5 @@
+import utils from './utils'
+
 const googleSearch = async (input) => {
 	const results = await fetch(`http://localhost:3000/v1/search?q=${encodeURIComponent(input)}`)
 	const json = await results.json()
@@ -6,8 +8,7 @@ const googleSearch = async (input) => {
 }
 
 const googleToolAction = async (input) => {
-	const pattern = /query\s?=\s?(.+)/
-	const queryWord = input.match(pattern)[1]
+	const queryWord = utils.matchPattern(/query\s?=\s?(.+)/, input)
 
 	if (!queryWord) {
 		return 'Please provide a query'

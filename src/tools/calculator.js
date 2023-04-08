@@ -1,6 +1,7 @@
+import utils from './utils'
+
 const mathCalculatorAction = (input) => {
-	const pattern = /expression\s?=\s?("|')(.+)("|')/
-	const expression = input.match(pattern)[2]
+	const expression = utils.matchPattern(/expression\s?=\s?(?:"|')(.+)(?:"|')/, input)
 
 	if (!expression) {
 		return "I don't understand your expression. Please use Javascript syntax"
