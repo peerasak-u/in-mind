@@ -23,5 +23,12 @@ const googleToolAction = async (input) => {
 }
 
 export default {
+	name: 'google',
+	emoji: '🌐',
+	description:
+		"the best search engine in the world. if you don't know the anwser or you need to know a real-time data, google it first!",
+	inputs: {
+		query: "a single query keyword from only single sub-question, if you have to search birthdate for multiple peoples you should search one by one e.g. 'Donald Trump birthdate'",
+	},
 	action: googleToolAction,
 }

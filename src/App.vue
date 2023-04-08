@@ -218,48 +218,25 @@ export default {
         models: ['gpt-3.5-turbo', 'gpt-4'],
         tools: [
             {
-                name: 'browser',
-                emoji: '🌐',
-                description:
-                    "the best search engine in the world. if you don't know the anwser or you need to know a real-time data, browse it first!",
-                inputs: {
-                    query: "a single query keyword from only single sub-question, if you have to search birthdate for multiple peoples you should search one by one e.g. 'Donald Trump birthdate'",
-                },
+                ...google,
                 selected: true,
                 disabled: false,
                 task: google.action,
             },
             {
-                name: 'math_calculator',
-                emoji: '🧮',
-                description: 'calculator for mathamatic problem by using javascript',
-                inputs: {
-                    expression: "a mathamatic problem in javascript expression format e.g. '1 + 1'",
-                },
+                ...calculator,
                 selected: false,
                 disabled: false,
                 task: calculator.action,
             },
             {
-                name: 'date_calculator',
-                emoji: '📅',
-                description: 'calculator day between two dates',
-                inputs: {
-                    from: "the start date in format 'YYYY-MM-DDTHH:mm:ss.sssZ'",
-                    to: "the end date in format 'YYYY-MM-DDTHH:mm:ss.sssZ'",
-                    type: "a type of answer unit, should be only one from ['year', 'month', 'day']",
-                },
+                ...dateCalculator,
                 selected: false,
                 disabled: false,
                 task: dateCalculator.action,
             },
             {
-                name: 'cnbc_summarizer',
-                emoji: '🌈',
-                description: 'summarizing tool for cnbc news by just providing the url',
-                inputs: {
-                    url: 'the url of the news in cnbc.com',
-                },
+                ...cnbc,
                 selected: false,
                 disabled: false,
                 task: async (input) => {

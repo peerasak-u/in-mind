@@ -43,5 +43,13 @@ const dateCalculatorAction = (input) => {
 }
 
 export default {
+	name: 'date_calculator',
+	emoji: '📅',
+	description: 'calculator day between two dates',
+	inputs: {
+		from: "the start date in format 'YYYY-MM-DDTHH:mm:ss.sssZ'",
+		to: "the end date in format 'YYYY-MM-DDTHH:mm:ss.sssZ'",
+		type: "a type of answer unit, should be only one from ['year', 'month', 'day']",
+	},
 	action: dateCalculatorAction,
 }

@@ -79,5 +79,11 @@ const cnbcToolAction = async (input, apiKey, model) => {
 }
 
 export default {
+	name: 'cnbc_summarizer',
+	emoji: '🌈',
+	description: 'summarizing tool for cnbc news by just providing the url',
+	inputs: {
+		url: 'the url of the news in cnbc.com',
+	},
 	action: cnbcToolAction,
 }

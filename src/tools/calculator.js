@@ -11,5 +11,11 @@ const mathCalculatorAction = (input) => {
 }
 
 export default {
+	name: 'math_calculator',
+	emoji: '🧮',
+	description: 'calculator for mathamatic problem by using javascript',
+	inputs: {
+		expression: "a mathamatic problem in javascript expression format e.g. '1 + 1'",
+	},
 	action: mathCalculatorAction,
 }
