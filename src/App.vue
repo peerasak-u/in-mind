@@ -221,28 +221,21 @@ export default {
                 ...google,
                 selected: true,
                 disabled: false,
-                task: google.action,
             },
             {
                 ...calculator,
                 selected: false,
                 disabled: false,
-                task: calculator.action,
             },
             {
                 ...dateCalculator,
                 selected: false,
                 disabled: false,
-                task: dateCalculator.action,
             },
             {
                 ...cnbc,
                 selected: false,
                 disabled: false,
-                task: async (input) => {
-                    const result = await cnbc.action(input, this.apiKey, this.model)
-                    return result
-                },
             },
         ],
     }),
@@ -363,7 +356,8 @@ export default {
                 throw new Error('Tool not found')
             }
 
-            const result = await tool.task(actionInput.content)
+            const task = tool.action(this, this.apiKey, this.model)
+            const result = await task(actionInput.content)
 
             const observation = {
                 type: 'Observation',

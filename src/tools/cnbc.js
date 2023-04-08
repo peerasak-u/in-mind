@@ -85,5 +85,7 @@ export default {
 	inputs: {
 		url: 'the url of the news in cnbc.com',
 	},
-	action: cnbcToolAction,
+	action: (apiKey, model) => {
+		return (input) => cnbcToolAction(input, apiKey, model)
+	},
 }

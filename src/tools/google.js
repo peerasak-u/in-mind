@@ -30,5 +30,7 @@ export default {
 	inputs: {
 		query: "a single query keyword from only single sub-question, if you have to search birthdate for multiple peoples you should search one by one e.g. 'Donald Trump birthdate'",
 	},
-	action: googleToolAction,
+	action: (apiKey, model) => {
+		return (input) => googleToolAction(input, apiKey, model)
+	},
 }

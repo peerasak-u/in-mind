@@ -51,5 +51,7 @@ export default {
 		to: "the end date in format 'YYYY-MM-DDTHH:mm:ss.sssZ'",
 		type: "a type of answer unit, should be only one from ['year', 'month', 'day']",
 	},
-	action: dateCalculatorAction,
+	action: (apiKey, model) => {
+		return (input) => dateCalculatorAction(input, apiKey, model)
+	},
 }

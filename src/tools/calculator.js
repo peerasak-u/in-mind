@@ -17,5 +17,7 @@ export default {
 	inputs: {
 		expression: "a mathamatic problem in javascript expression format e.g. '1 + 1'",
 	},
-	action: mathCalculatorAction,
+	action: (apiKey, model) => {
+		return (input) => mathCalculatorAction(input, apiKey, model)
+	},
 }
