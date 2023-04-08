@@ -16,7 +16,7 @@
                         />
                         <input
                             v-else
-                            v-model="openAiKey"
+                            v-model="apiKeyInput"
                             type="text"
                             class="w-full text-slate-600 leading-relaxed block bg-gray-100 rounded-xl p-2 border-2 border-transparent text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
                             placeholder="Insert your OpenAI API key ..."
@@ -210,34 +210,19 @@ export default {
     data: () => ({
         loading: false,
         question: 'If Leonado da Vinci were still alive, how old would he be?',
-        openAiKey: '',
+        apiKeyInput: '',
         tokenUsage: 0,
         messages: [],
         isDropdownVisible: false,
         model: 'gpt-3.5-turbo',
         models: ['gpt-3.5-turbo', 'gpt-4'],
-        tools: [
-            {
-                ...google,
-                selected: true,
+        tools: [google, calculator, dateCalculator, cnbc].map((tool, index) => {
+            return {
+                ...tool,
+                selected: index === 0,
                 disabled: false,
-            },
-            {
-                ...calculator,
-                selected: false,
-                disabled: false,
-            },
-            {
-                ...dateCalculator,
-                selected: false,
-                disabled: false,
-            },
-            {
-                ...cnbc,
-                selected: false,
-                disabled: false,
-            },
-        ],
+            }
+        }),
     }),
     computed: {
         selectedTools() {
@@ -249,7 +234,7 @@ export default {
     },
     methods: {
         saveApiKey() {
-            localStorage.setItem('openai_api_key', this.openAiKey)
+            localStorage.setItem('openai_api_key', this.apiKeyInput)
         },
         toggleDropdown() {
             this.isDropdownVisible = !this.isDropdownVisible
