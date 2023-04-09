@@ -36,3 +36,7 @@ pnpm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## To Do
+- [ ] [Question Answering] Clear the observation if it does not help to find the answer in order to save memory.
+- [ ] [Question Answering] Summarize all the steps taken before providing the final answer to the prompt in order to save memory.
