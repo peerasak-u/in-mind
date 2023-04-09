@@ -2,7 +2,15 @@
 
 InMind is a web application designed to show how LLMs like ChatGPT can find answers by reflecting on information and using the provided tools to arrive at the final answer.
 
-![Screenshot](./screenshot.png)
+## Features
+
+### Question Answering
+
+![Ask Question mode](./screenshot-1.png)
+
+### English grammar fixer
+
+![English Grammar fixer](./screenshot-2.png)
 
 ## Project setup
 ```
