@@ -1,0 +1,24 @@
+Instruction: Response to <TEXT> below by fix all the grammar errors. Only fix grammar errors, do not change the text style. Then explain the grammar errors follow a <JSON_FORMAT>.
+
+JSON_FORMAT=
+"""
+{
+    "improved": "should be a text that already improve or fix grammar errors",
+    "errors": [
+        {
+            "explain": "should be explaination of the error word",
+            "type": "should be spelling or grammar",
+        },
+        ...
+    ]
+}
+"""
+
+TEXT=
+"""
+{{user_input}}
+"""
+
+Note: Please response only JSON string in <JSON_FORMAT>
+
+Response to the <TEXT> following the instruction:
