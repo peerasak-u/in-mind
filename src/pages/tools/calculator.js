@@ -1,14 +1,20 @@
 import utils from './utils'
 
+const errorMessage = "I don't understand your expression. Please use Javascript syntax, or the other tools"
+
 const mathCalculatorAction = (input) => {
 	const expression = utils.matchPattern(/expression\s?=\s?(?:"|')(.+)(?:"|')/, input)
 
 	if (!expression) {
-		return "I don't understand your expression. Please use Javascript syntax"
+		return errorMessage
 	}
 
-	const result = eval(expression)
-	return `${result}`
+	try {
+		const result = eval(expression)
+		return `${result}`
+	} catch (error) {
+		return errorMessage
+	}
 }
 
 export default {
